@@ -1,12 +1,14 @@
 package org.example.simplecrm.controller;
 
+import jakarta.validation.Valid;
+import org.example.simplecrm.dto.SellerDto;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.service.SellerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sellers")
@@ -34,4 +36,10 @@ public class SellerController {
         return ResponseEntity.ok(find);
 
     }
+    @PostMapping
+    public ResponseEntity<?> createSeller(@RequestBody @Valid SellerDto seller){
+        Seller savedSeller =  sellerService.saveSeller(seller);
+        return new ResponseEntity<>(savedSeller, HttpStatus.CREATED);
+    }
+
 }

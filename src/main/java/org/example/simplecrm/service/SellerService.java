@@ -1,5 +1,6 @@
 package org.example.simplecrm.service;
 
+import org.example.simplecrm.dto.SellerDto;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.repository.SellerRepository;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,13 @@ public class SellerService {
     }
     public Seller findById(Long id){
         return sellerRepository.findById(id).orElse(null);
+    }
+    public Seller saveSeller(SellerDto sellerDto){
+        Seller sellerSaving = new Seller();
+        sellerSaving.setName(sellerDto.getName());
+        sellerSaving.setContactInfo(sellerDto.getContactInfo());
+        sellerSaving.setRegistrationDate(sellerDto.getRegistrationDate());
+
+        return sellerRepository.save(sellerSaving);
     }
 }
