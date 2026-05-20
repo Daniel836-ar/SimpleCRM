@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.SellerDto;
 import org.example.simplecrm.model.Seller;
+import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.service.SellerService;
+import org.example.simplecrm.service.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,11 @@ import java.util.List;
 @RequestMapping("/api/sellers")
 public class SellerController {
     private final SellerService sellerService;
+    private final TransactionService transactionService;
 
-    public SellerController(SellerService sellerService) {
+    public SellerController(SellerService sellerService, TransactionService transactionService) {
         this.sellerService = sellerService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping
@@ -37,6 +41,17 @@ public class SellerController {
         return ResponseEntity.ok(find);
 
     }
+
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long id){
+        List<Transaction> findTransasctions = transactionService.findBySeller(id);
+        if(findTransasctions.size()!=0){
+            return ResponseEntity.ok(findTransasctions);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+
     @PostMapping
     public ResponseEntity<Seller> createSeller(@RequestBody @Valid SellerDto seller){
         Seller savedSeller =  sellerService.save(seller);
@@ -52,12 +67,12 @@ public class SellerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSeller(@PathVariable Long id){
+    public ResponseEntity deleteSeller(@PathVariable Long id){
         try{
             sellerService.deleteById(id);
-            return new ResponseEntity<>("Успешно удалили продавца", HttpStatus.NO_CONTENT);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){// если в бд не оказалось продавца с таким id
+            return ResponseEntity.notFound().build();
         }
     }
 

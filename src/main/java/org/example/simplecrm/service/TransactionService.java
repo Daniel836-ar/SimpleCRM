@@ -43,5 +43,9 @@ public class TransactionService {
         return transaction;
     }
 
+    public List<Transaction> findBySeller(Long sellerId){
+        return transactionRepository.findBySellerId(sellerId);
+    }
+
 
 }

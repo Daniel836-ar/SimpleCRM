@@ -1,7 +1,6 @@
 package org.example.simplecrm.dto;
 
 import lombok.Data;
-import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.enums.PaymantType;
 
 import java.time.LocalDateTime;

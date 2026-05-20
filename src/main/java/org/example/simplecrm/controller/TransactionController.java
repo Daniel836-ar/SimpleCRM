@@ -32,14 +32,16 @@ public class TransactionController {
         }
         return ResponseEntity.notFound().build();
     }
-
     @PostMapping
     public ResponseEntity<?> createTransaction(@RequestBody TransactionDto dto){
         try{
             Transaction transaction = transactionService.create(dto);
             return new ResponseEntity<>(transaction, HttpStatus.CREATED);
         }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
+
 }
