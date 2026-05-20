@@ -39,12 +39,12 @@ public class SellerController {
     }
     @PostMapping
     public ResponseEntity<Seller> createSeller(@RequestBody @Valid SellerDto seller){
-        Seller savedSeller =  sellerService.saveSeller(seller);
+        Seller savedSeller =  sellerService.save(seller);
         return new ResponseEntity<>(savedSeller, HttpStatus.CREATED);
     }
     @PatchMapping("/{id}")
     public ResponseEntity<Seller> updateSeller(@PathVariable Long id, @RequestBody PatchSellerDto patchSellerDto){
-    Seller updateSeller = sellerService.updateSeller(id, patchSellerDto);
+    Seller updateSeller = sellerService.update(id, patchSellerDto);
     if (updateSeller==null){
         return ResponseEntity.notFound().build();
     }
@@ -52,12 +52,12 @@ public class SellerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Seller> deleteSeller(@PathVariable Long id){
+    public ResponseEntity<String> deleteSeller(@PathVariable Long id){
         try{
-            sellerService.deleteSellerById(id);
-            return ResponseEntity.noContent().build();
+            sellerService.deleteById(id);
+            return new ResponseEntity<>("Успешно удалили продавца", HttpStatus.NO_CONTENT);
         }catch (Exception e){
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

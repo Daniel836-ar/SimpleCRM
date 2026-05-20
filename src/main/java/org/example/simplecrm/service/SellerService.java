@@ -9,7 +9,7 @@ import org.example.simplecrm.repository.SellerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Slf4j
 @Service
 public class SellerService {
@@ -27,7 +27,7 @@ public class SellerService {
     public Seller findById(Long id){
         return sellerRepository.findById(id).orElse(null);
     }
-    public Seller saveSeller(SellerDto sellerDto){
+    public Seller save(SellerDto sellerDto){
         Seller sellerSaving = new Seller();
         sellerSaving.setName(sellerDto.getName());
         sellerSaving.setContactInfo(sellerDto.getContactInfo());
@@ -37,7 +37,7 @@ public class SellerService {
     }
 
     @Transactional
-    public Seller updateSeller(Long id, PatchSellerDto dto){
+    public Seller update(Long id, PatchSellerDto dto){
         Seller findSeller = findById(id);
         if(findSeller==null){// нет продавца по этому id
             return null;
@@ -59,12 +59,12 @@ public class SellerService {
     }
 
     @Transactional
-    public void deleteSellerById(Long id) throws Exception {
+    public void deleteById(Long id) throws Exception {
 
         if(findById(id)!=null) {
             sellerRepository.deleteById(id);
         }else {
-            throw new Exception();
+            throw new Exception("Не нашли продавца по данному id");
         }
 
     }
