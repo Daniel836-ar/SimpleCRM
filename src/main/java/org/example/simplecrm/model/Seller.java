@@ -1,6 +1,7 @@
 package org.example.simplecrm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -12,7 +13,10 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "contact_info", nullable = false)
     private String contactInfo;
+    @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
 }
