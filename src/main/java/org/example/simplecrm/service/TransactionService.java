@@ -1,6 +1,7 @@
 package org.example.simplecrm.service;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.example.simplecrm.dto.TransactionDto;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class TransactionService {
     private final TransactionRepository transactionRepository;
@@ -45,6 +47,16 @@ public class TransactionService {
 
     public List<Transaction> findBySeller(Long sellerId){
         return transactionRepository.findBySellerId(sellerId);
+    }
+    @Transactional
+    public void deleteById(Long id) throws Exception{
+        if (!transactionRepository.findById(id).isEmpty()) {
+            log.info("Этот ексепт: " + transactionRepository.findById(id));
+            transactionRepository.deleteById(id);
+        }else{
+            throw new Exception();
+        }
+
     }
 
 

@@ -42,6 +42,17 @@ public class TransactionController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTransactionById(@PathVariable Long id){
+        try{
+            transactionService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){// если в бд не оказалось транзакции с таким id
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 
 
 }

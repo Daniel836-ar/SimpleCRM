@@ -3,6 +3,7 @@ package org.example.simplecrm.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "sellers")
@@ -18,4 +19,5 @@ public class Seller {
     private String contactInfo;
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
+
 }

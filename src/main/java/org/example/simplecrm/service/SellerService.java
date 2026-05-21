@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.SellerDto;
 import org.example.simplecrm.model.Seller;
+import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.repository.SellerRepository;
+import org.example.simplecrm.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +16,11 @@ import java.util.List;
 @Service
 public class SellerService {
     private final SellerRepository sellerRepository;
+    private final TransactionRepository transactionRepository;
 
-    public SellerService(SellerRepository sellerRepository) {
+    public SellerService(SellerRepository sellerRepository, TransactionRepository transactionRepository) {
         this.sellerRepository = sellerRepository;
+        this.transactionRepository = transactionRepository;
     }
     public List<Seller> findByName(String name){
         return sellerRepository.findByName(name);
@@ -60,12 +64,19 @@ public class SellerService {
 
     @Transactional
     public void deleteById(Long id) throws Exception {
-
         if(findById(id)!=null) {
+            //deleteAllTransactionsBySellerId(id);
             sellerRepository.deleteById(id);
         }else {
             throw new Exception("Не нашли продавца по данному id");
         }
+    }
 
+
+    private void deleteAllTransactionsBySellerId(Long id){
+        List<Transaction> allTransactions = transactionRepository.findAllBySellerId(id);
+        for(Transaction transaction: allTransactions){
+            transactionRepository.deleteById(transaction.getId());
+        }
     }
 }
