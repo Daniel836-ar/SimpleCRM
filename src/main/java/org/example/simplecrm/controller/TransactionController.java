@@ -1,5 +1,7 @@
 package org.example.simplecrm.controller;
 
+import jakarta.validation.Valid;
+import org.example.simplecrm.dto.PatchTransactionDto;
 import org.example.simplecrm.dto.TransactionDto;
 import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.service.TransactionService;
@@ -33,13 +35,22 @@ public class TransactionController {
         return ResponseEntity.notFound().build();
     }
     @PostMapping
-    public ResponseEntity<?> createTransaction(@RequestBody TransactionDto dto){
+    public ResponseEntity<?> createTransaction(@RequestBody @Valid TransactionDto dto){
         try{
             Transaction transaction = transactionService.create(dto);
             return new ResponseEntity<>(transaction, HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody PatchTransactionDto patchTransactionDto){
+        Transaction updateTransaction = transactionService.update(id, patchTransactionDto);
+        if (updateTransaction==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updateTransaction);
     }
 
     @DeleteMapping("/{id}")

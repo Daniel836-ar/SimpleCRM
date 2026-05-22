@@ -7,12 +7,8 @@ import org.example.simplecrm.model.enums.PaymantType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 @Data
-public class TransactionDto {
-    private Long sellerId;
-    @NotNull
+public class PatchTransactionDto {
     private BigDecimal amount;
-    @NotNull
     private PaymantType paymantType;
-    @NotNull
     private LocalDateTime transactionDate;
 }
