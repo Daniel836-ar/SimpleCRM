@@ -3,6 +3,8 @@ package org.example.simplecrm.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.simplecrm.model.enums.PaymantType;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,7 +17,7 @@ public class Transaction {
     @ManyToOne
     private Seller seller;
 
-    private Double amount;
+    private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private PaymantType paymantType;
     private LocalDateTime transactionDate;

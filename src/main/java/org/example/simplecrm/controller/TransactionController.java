@@ -1,8 +1,13 @@
 package org.example.simplecrm.controller;
 
+import org.example.simplecrm.dto.TransactionDto;
+import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.service.TransactionService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -12,4 +17,42 @@ public class TransactionController {
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
+
+    @GetMapping
+    public ResponseEntity<List<Transaction>> getTransactions(){
+        return ResponseEntity.ok(
+                transactionService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id){
+        Transaction findTrans = transactionService.findById(id);
+        if(findTrans!=null){
+            return ResponseEntity.ok(findTrans);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping
+    public ResponseEntity<?> createTransaction(@RequestBody TransactionDto dto){
+        try{
+            Transaction transaction = transactionService.create(dto);
+            return new ResponseEntity<>(transaction, HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTransactionById(@PathVariable Long id){
+        try{
+            transactionService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){// если в бд не оказалось транзакции с таким id
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+
 }
