@@ -15,4 +15,7 @@ public class AnalyticsService {
         this.sellerRepository = sellerRepository;
     }
 
+    public List<Seller> getSellerWithSumAmountLessThen(BigDecimal amount){
+        return sellerRepository.findSellersWithAmountSumLessThan(amount);
+    }
 }

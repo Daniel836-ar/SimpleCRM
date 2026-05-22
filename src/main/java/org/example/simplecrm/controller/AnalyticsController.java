@@ -13,8 +13,11 @@ import java.util.List;
 public class AnalyticsController {
     private final AnalyticsService analyticsService;
 
-
     public AnalyticsController(AnalyticsService analyticsService) {
         this.analyticsService = analyticsService;
+    }
+    @GetMapping
+    public List<Seller> getSellerWithSumAmountLessThen(@RequestParam BigDecimal amount){
+        return analyticsService.getSellerWithSumAmountLessThen(amount);
     }
 }
