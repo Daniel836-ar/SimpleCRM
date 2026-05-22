@@ -47,7 +47,7 @@ public class SellerService {
             return null;
         }
 
-        // проходимся по каждому полю , чтобы понять какие обновлять
+        // проходимся по каждому полю , и обновляем при надобности
         if(dto.getName()!=null){
             findSeller.setName(dto.getName());
         }

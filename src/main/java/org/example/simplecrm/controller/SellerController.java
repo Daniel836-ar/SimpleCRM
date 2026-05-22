@@ -51,14 +51,14 @@ public class SellerController {
         return ResponseEntity.badRequest().build();
     }
 
-
     @PostMapping
     public ResponseEntity<Seller> createSeller(@RequestBody @Valid SellerDto seller){
         Seller savedSeller =  sellerService.save(seller);
         return new ResponseEntity<>(savedSeller, HttpStatus.CREATED);
     }
+
     @PatchMapping("/{id}")
-    public ResponseEntity<Seller> updateSeller(@PathVariable Long id, @RequestBody PatchSellerDto patchSellerDto){
+    public ResponseEntity<Seller> updateSeller(@PathVariable Long id, @RequestBody @Valid PatchSellerDto patchSellerDto){
     Seller updateSeller = sellerService.update(id, patchSellerDto);
     if (updateSeller==null){
         return ResponseEntity.notFound().build();

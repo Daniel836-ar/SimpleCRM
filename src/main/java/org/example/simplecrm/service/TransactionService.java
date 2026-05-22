@@ -2,6 +2,8 @@ package org.example.simplecrm.service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.example.simplecrm.dto.PatchSellerDto;
+import org.example.simplecrm.dto.PatchTransactionDto;
 import org.example.simplecrm.dto.TransactionDto;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
@@ -57,6 +59,30 @@ public class TransactionService {
             throw new Exception();
         }
 
+    }
+
+    @Transactional
+    public Transaction update(Long id, PatchTransactionDto dto){
+        Transaction findTransaction = findById(id);
+        if(findTransaction==null){// нет транзакции по этому id
+            return null;
+        }
+
+        // проходимся по каждому полю , и обновляем при надобности
+        if(dto.getAmount()!=null){
+            findTransaction.setAmount(dto.getAmount());
+        }
+
+        if(dto.getPaymantType()!=null){
+            findTransaction.setPaymantType(dto.getPaymantType());
+        }
+
+        if(dto.getTransactionDate()!=null){
+            findTransaction.setTransactionDate(dto.getTransactionDate());
+        }
+        transactionRepository.save(findTransaction);
+
+        return findTransaction;
     }
 
 
