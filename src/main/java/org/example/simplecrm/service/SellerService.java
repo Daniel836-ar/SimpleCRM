@@ -65,18 +65,11 @@ public class SellerService {
     @Transactional
     public void deleteById(Long id) throws Exception {
         if(findById(id)!=null) {
-            deleteAllTransactionsBySellerId(id);
+            transactionRepository.deleteBySellerId(id);
             sellerRepository.deleteById(id);
         }else {
             throw new Exception("Не нашли продавца по данному id");
         }
     }
 
-
-    private void deleteAllTransactionsBySellerId(Long id){
-        List<Transaction> allTransactions = transactionRepository.findAllBySellerId(id);
-        for(Transaction transaction: allTransactions){
-            transactionRepository.deleteById(transaction.getId());
-        }
-    }
 }

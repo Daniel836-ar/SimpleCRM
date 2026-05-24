@@ -53,8 +53,7 @@ public class TransactionService {
     @Transactional
     public void deleteById(Long id) throws Exception{
         if (!transactionRepository.findById(id).isEmpty()) {
-            log.info("Этот ексепт: " + transactionRepository.findById(id));
-            transactionRepository.deleteById(id);
+            transactionRepository.deleteBySellerId(id);
         }else{
             throw new Exception();
         }
