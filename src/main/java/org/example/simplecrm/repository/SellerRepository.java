@@ -16,7 +16,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     @Query("SELECT s FROM Transaction t JOIN t.seller s GROUP BY s.id HAVING SUM(t.amount) < :limitAmount")
     List<Seller> findSellersWithAmountSumLessThan(@Param("limitAmount") BigDecimal limitAmount);
 
-//    @Query("Select s From Transaction t JOIN t.seller s GROUP BY s.id HAVING SUM(t.amount) = :TargetDay")
-//    Seller findBestSellerOfDay(@Param("TargetDay")LocalDateTime targetDay);
+    List<Seller> findByRegistrationDateBetween(LocalDateTime registrationDateAfter, LocalDateTime registrationDateBefore);
 
 }

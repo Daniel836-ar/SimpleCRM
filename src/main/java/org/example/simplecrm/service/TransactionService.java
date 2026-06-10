@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.PatchTransactionDto;
 import org.example.simplecrm.dto.TransactionDto;
+import org.example.simplecrm.exceptions.ExceptionBadRequest;
+import org.example.simplecrm.exceptions.ExceptionNotFound;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.repository.TransactionRepository;
@@ -32,10 +34,10 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction create(TransactionDto dto) throws Exception {
+    public Transaction create(TransactionDto dto){
         Seller findSeller =sellerService.findById(dto.getSellerId());
         if(findSeller==null){
-            throw new Exception("Не нашли продавца по данному id");
+            throw new ExceptionBadRequest("Не нашли продавца по данному id");
         }
         Transaction transaction = new Transaction();
         transaction.setSeller(findSeller);
@@ -51,11 +53,11 @@ public class TransactionService {
         return transactionRepository.findBySellerId(sellerId);
     }
     @Transactional
-    public void deleteById(Long id) throws Exception{
+    public void deleteById(Long id){
         if (!transactionRepository.findById(id).isEmpty()) {
             transactionRepository.deleteBySellerId(id);
         }else{
-            throw new Exception();
+            throw new ExceptionNotFound("Не нашли продавца по данному id");
         }
 
     }
