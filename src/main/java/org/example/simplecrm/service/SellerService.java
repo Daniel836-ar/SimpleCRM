@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.SellerDto;
+import org.example.simplecrm.exceptions.ExceptionNotFound;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.repository.SellerRepository;
@@ -63,12 +64,12 @@ public class SellerService {
     }
 
     @Transactional
-    public void deleteById(Long id) throws Exception {
+    public void deleteById(Long id){
         if(findById(id)!=null) {
             transactionRepository.deleteBySellerId(id);
             sellerRepository.deleteById(id);
         }else {
-            throw new Exception("Не нашли продавца по данному id");
+            throw new ExceptionNotFound("Не нашли продавца по данному id");
         }
     }
 

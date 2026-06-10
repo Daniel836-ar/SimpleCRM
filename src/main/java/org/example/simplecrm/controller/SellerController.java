@@ -3,6 +3,7 @@ package org.example.simplecrm.controller;
 import jakarta.validation.Valid;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.SellerDto;
+import org.example.simplecrm.exceptions.ExceptionNotFound;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.service.SellerService;
@@ -61,19 +62,17 @@ public class SellerController {
     public ResponseEntity<Seller> updateSeller(@PathVariable Long id, @RequestBody @Valid PatchSellerDto patchSellerDto){
     Seller updateSeller = sellerService.update(id, patchSellerDto);
     if (updateSeller==null){
-        return ResponseEntity.notFound().build();
+        throw new ExceptionNotFound("Не смогли обновить данные продавца");
     }
     return ResponseEntity.ok(updateSeller);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteSeller(@PathVariable Long id){
-        try{
-            sellerService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){// если в бд не оказалось продавца с таким id
-            return ResponseEntity.notFound().build();
-        }
+
+        sellerService.deleteById(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 

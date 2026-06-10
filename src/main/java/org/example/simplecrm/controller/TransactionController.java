@@ -36,12 +36,10 @@ public class TransactionController {
     }
     @PostMapping
     public ResponseEntity<?> createTransaction(@RequestBody @Valid TransactionDto dto){
-        try{
-            Transaction transaction = transactionService.create(dto);
-            return new ResponseEntity<>(transaction, HttpStatus.CREATED);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+
+        Transaction transaction = transactionService.create(dto);
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
+
     }
 
     @PatchMapping("/{id}")
@@ -55,12 +53,10 @@ public class TransactionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteTransactionById(@PathVariable Long id){
-        try{
+
             transactionService.deleteById(id);
             return ResponseEntity.noContent().build();
-        }catch (Exception e){// если в бд не оказалось транзакции с таким id
-            return ResponseEntity.notFound().build();
-        }
+
     }
 
 
