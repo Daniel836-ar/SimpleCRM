@@ -70,62 +70,6 @@
           "response": []
         },
         {
-          "name": "Patch seller",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{   \n    \"name\": \"Василий \",\n    \"contactInfo\": \"VasiyCool@gmail.com,\",\n    \"registrationDate\": \"2026-05-19T20:00:00\"\n    }",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8080/api/sellers/1",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "sellers",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get seller by name",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:8080/api/sellers?name=Иван",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "sellers"
-              ],
-              "query": [
-                {
-                  "key": "name",
-                  "value": "Иван"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Get All",
           "event": [
             {
@@ -162,6 +106,40 @@
           "response": []
         },
         {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get seller by name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/sellers?name=Иван",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "sellers"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Иван"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Get transactions by id seller",
           "request": {
             "method": "GET",
@@ -178,6 +156,36 @@
                 "sellers",
                 "1",
                 "transactions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Patch seller",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{   \n    \"name\": \"Василий \",\n    \"contactInfo\": \"VasiyCool@gmail.com,\",\n    \"registrationDate\": \"2026-05-19T20:00:00\"\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/sellers/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "sellers",
+                "1"
               ]
             }
           },
@@ -337,6 +345,14 @@
       "item": [
         {
           "name": "Get Seller with sum less then",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get best Sellers of Time",
           "request": {
             "method": "GET",
             "header": []

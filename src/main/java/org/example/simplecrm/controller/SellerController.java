@@ -3,7 +3,7 @@ package org.example.simplecrm.controller;
 import jakarta.validation.Valid;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.SellerDto;
-import org.example.simplecrm.exceptions.ExceptionNotFound;
+import org.example.simplecrm.exceptions.NotFoundException;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.service.SellerService;
@@ -36,20 +36,13 @@ public class SellerController {
     @GetMapping("/{id}")
     private ResponseEntity<Seller> getById(@PathVariable Long id){
         Seller find = sellerService.findById(id);
-        if(find==null){
-            return ResponseEntity.notFound().build();// выкидываю ошибку если null
-        }
         return ResponseEntity.ok(find);
-
     }
 
     @GetMapping("/{id}/transactions")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long id){
         List<Transaction> findTransasctions = transactionService.findBySeller(id);
-        if(findTransasctions.size()!=0){
-            return ResponseEntity.ok(findTransasctions);
-        }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(findTransasctions);
     }
 
     @PostMapping
@@ -61,9 +54,7 @@ public class SellerController {
     @PatchMapping("/{id}")
     public ResponseEntity<Seller> updateSeller(@PathVariable Long id, @RequestBody @Valid PatchSellerDto patchSellerDto){
     Seller updateSeller = sellerService.update(id, patchSellerDto);
-    if (updateSeller==null){
-        throw new ExceptionNotFound("Не смогли обновить данные продавца");
-    }
+
     return ResponseEntity.ok(updateSeller);
     }
 

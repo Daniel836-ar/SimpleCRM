@@ -2,14 +2,15 @@ package org.example.simplecrm.service;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.PatchTransactionDto;
 import org.example.simplecrm.dto.TransactionDto;
-import org.example.simplecrm.exceptions.ExceptionBadRequest;
-import org.example.simplecrm.exceptions.ExceptionNotFound;
+import org.example.simplecrm.exceptions.BadRequestException;
+import org.example.simplecrm.exceptions.NotFoundException;
 import org.example.simplecrm.model.Seller;
 import org.example.simplecrm.model.Transaction;
+import org.example.simplecrm.repository.SellerRepository;
 import org.example.simplecrm.repository.TransactionRepository;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,11 @@ import java.util.List;
 @Service
 public class TransactionService {
     private final TransactionRepository transactionRepository;
-    private final SellerService sellerService;
+    private final SellerRepository sellerRepository;
 
-    public TransactionService(TransactionRepository transactionRepository, SellerService sellerService) {
+    public TransactionService(TransactionRepository transactionRepository, SellerRepository sellerRepository) {
         this.transactionRepository = transactionRepository;
-        this.sellerService = sellerService;
+        this.sellerRepository = sellerRepository;
     }
 
     public List<Transaction> findAll(){
@@ -30,14 +31,18 @@ public class TransactionService {
     }
 
     public Transaction findById(Long id){
-        return transactionRepository.findById(id).orElse(null);
+        Transaction findTransaction = transactionRepository.findById(id).orElse(null);
+        if(findTransaction==null){
+            throw new NotFoundException("Нет транзакции с таким id");
+        }
+        return findTransaction;
     }
 
     @Transactional
     public Transaction create(TransactionDto dto){
-        Seller findSeller =sellerService.findById(dto.getSellerId());
+        Seller findSeller = sellerRepository.findById(dto.getSellerId()).orElse(null);
         if(findSeller==null){
-            throw new ExceptionBadRequest("Не нашли продавца по данному id");
+            throw new BadRequestException("Не нашли продавца по данному id");
         }
         Transaction transaction = new Transaction();
         transaction.setSeller(findSeller);
@@ -50,14 +55,19 @@ public class TransactionService {
     }
 
     public List<Transaction> findBySeller(Long sellerId){
-        return transactionRepository.findBySellerId(sellerId);
+        // есть ли вообще такой продавец
+        if (!sellerRepository.existsById(sellerId)) {
+            throw new BadRequestException("Не нашли продавца по данному id");
+        }
+        List<Transaction> findTransactions = transactionRepository.findBySellerId(sellerId);
+        return findTransactions;
     }
     @Transactional
     public void deleteById(Long id){
         if (!transactionRepository.findById(id).isEmpty()) {
             transactionRepository.deleteBySellerId(id);
         }else{
-            throw new ExceptionNotFound("Не нашли продавца по данному id");
+            throw new NotFoundException("Не нашли продавца по данному id");
         }
 
     }
@@ -66,7 +76,7 @@ public class TransactionService {
     public Transaction update(Long id, PatchTransactionDto dto){
         Transaction findTransaction = findById(id);
         if(findTransaction==null){// нет транзакции по этому id
-            return null;
+            throw new NotFoundException("Нет транзакции с таким id");
         }
 
         // проходимся по каждому полю , и обновляем при надобности
@@ -85,6 +95,5 @@ public class TransactionService {
 
         return findTransaction;
     }
-
 
 }

@@ -7,6 +7,6 @@ import org.example.simplecrm.model.Seller;
 public class BestSellerOfTime {
     private Seller BestOfDay;
     private Seller BestOfMonth;
-    private Seller BestOfWeek;
+    private Seller BestOfQuarter;
     private Seller BestOfYear;
 }
