@@ -53,24 +53,25 @@ DB_URL=jdbc:postgresql://localhost:5432/имя_вашей_бд DB_USERNAME=ва�
 ### Вариант Б. Ручная проверка
 Можно выполнить запросы вручную (через cURL или свою коллекцию), используйте следующие спецификации :(базовый URL: `http://localhost:8080`):
 
-#### 1. Продавцы (Sellers) — `/api/sellers`
-* `GET /api/sellers` — Получить список всех продавцов.
+#### 1. Продавцы (Sellers) - `/api/sellers`
+* `GET /api/sellers` - Получить список всех продавцов.
   * *Опциональный параметр фильтрации*: `/api/sellers?name=Иван` (поиск по имени).
-* `GET /api/sellers/{id}` — Получить подробную информацию о конкретном продавце.
-* `GET /api/sellers/{id}/transactions` — Получить список всех транзакций конкретного продавца.
-* `POST /api/sellers` — Создать нового продавца. 
+* `GET /api/sellers/{id}` - Получить подробную информацию о конкретном продавце.
+* `GET /api/sellers/{id}/transactions` - Получить список всех транзакций конкретного продавца.
+* `POST /api/sellers` - Создать нового продавца. 
   * *Body (JSON)*: `{"name": "...", "contactInfo": "...", "registrationDate": "2026-05-22T15:30:00"}`
-* `PATCH /api/sellers/{id}` — Частично обновить информацию о продавце.
-* `DELETE /api/sellers/{id}` — Удалить продавца из системы.
+* `PATCH /api/sellers/{id}` - Частично обновить информацию о продавце.
+* `DELETE /api/sellers/{id}` - Удалить продавца из системы.
 
-#### 2. Транзакции (Transactions) — `/api/transactions`
-* `GET /api/transactions` — Получить список всех транзакций в CRM.
-* `GET /api/transactions/{id}` — Получить информацию о конкретной транзакции по ID.
-* `POST /api/transactions` — Создать новую транзакцию (проверяет существование продавца).
+#### 2. Транзакции (Transactions) - `/api/transactions`
+* `GET /api/transactions` - Получить список всех транзакций в CRM.
+* `GET /api/transactions/{id}` - Получить информацию о конкретной транзакции по ID.
+* `POST /api/transactions` - Создать новую транзакцию (проверяет существование продавца).
   * *Body (JSON)*: `{"sellerId": 1, "amount": 1500, "paymantType": "CARD", "transactionDate": "2026-05-22T15:35:00"}`
-* `PATCH /api/transactions/{id}` — Изменить данные транзакции .
-* `DELETE /api/transactions/{id}` — Удалить транзакцию по ID.
+* `PATCH /api/transactions/{id}` - Изменить данные транзакции .
+* `DELETE /api/transactions/{id}` - Удалить транзакцию по ID.
 
-#### 3. Модуль аналитики (Analytics) — `/api/analytics`
-* `GET /api/analytics/lessThen?amount=5000` — Возвращает список продавцов, у которых общая сумма транзакций меньше переданного параметра `amount`.
+#### 3. Модуль аналитики (Analytics) - `/api/analytics`
+* `GET /api/analytics/lessThen?amount=5000` - Возвращает список продавцов, у которых общая сумма транзакций меньше переданного параметра `amount`.
 
+* `GET /api/analytics` - Возвращает список продавцов, у которых сумма транзакций самая высокая в году, квартале, месяце, дне.

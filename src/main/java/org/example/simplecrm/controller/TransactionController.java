@@ -22,38 +22,29 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<List<Transaction>> getTransactions(){
-        return ResponseEntity.ok(
-                transactionService.findAll());
+        return ResponseEntity.ok(transactionService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id){
         Transaction findTrans = transactionService.findById(id);
-        if(findTrans!=null){
-            return ResponseEntity.ok(findTrans);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(findTrans);
     }
+
     @PostMapping
     public ResponseEntity<?> createTransaction(@RequestBody @Valid TransactionDto dto){
-
         Transaction transaction = transactionService.create(dto);
         return new ResponseEntity<>(transaction, HttpStatus.CREATED);
-
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody PatchTransactionDto patchTransactionDto){
         Transaction updateTransaction = transactionService.update(id, patchTransactionDto);
-        if (updateTransaction==null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(updateTransaction);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteTransactionById(@PathVariable Long id){
-
             transactionService.deleteById(id);
             return ResponseEntity.noContent().build();
 

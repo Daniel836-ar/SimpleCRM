@@ -4,9 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.example.simplecrm.dto.PatchSellerDto;
 import org.example.simplecrm.dto.SellerDto;
-import org.example.simplecrm.exceptions.ExceptionNotFound;
+import org.example.simplecrm.exceptions.NotFoundException;
 import org.example.simplecrm.model.Seller;
-import org.example.simplecrm.model.Transaction;
 import org.example.simplecrm.repository.SellerRepository;
 import org.example.simplecrm.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,11 @@ public class SellerService {
         return sellerRepository.findAll();
     }
     public Seller findById(Long id){
-        return sellerRepository.findById(id).orElse(null);
+        Seller find = sellerRepository.findById(id).orElse(null);
+        if(find==null){
+            throw new NotFoundException("Не нашли продавца по данному id");
+        }
+        return find;
     }
     public Seller save(SellerDto sellerDto){
         Seller sellerSaving = new Seller();
@@ -45,7 +48,7 @@ public class SellerService {
     public Seller update(Long id, PatchSellerDto dto){
         Seller findSeller = findById(id);
         if(findSeller==null){// нет продавца по этому id
-            return null;
+            throw new NotFoundException("Нет продавца с данным id");
         }
 
         // проходимся по каждому полю , и обновляем при надобности
@@ -69,7 +72,7 @@ public class SellerService {
             transactionRepository.deleteBySellerId(id);
             sellerRepository.deleteById(id);
         }else {
-            throw new ExceptionNotFound("Не нашли продавца по данному id");
+            throw new NotFoundException("Не нашли продавца по данному id");
         }
     }
 
